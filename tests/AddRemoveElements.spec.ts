@@ -1,4 +1,4 @@
-import { test, expect, Page, Locator } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("https://the-internet.herokuapp.com/add_remove_elements/");
