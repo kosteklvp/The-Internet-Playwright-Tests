@@ -6,18 +6,18 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('"Add Element" button', () => {
-  test('adds new "Delete" button', async ({ page }) => {
+  test('adds new "Delete" button.', async ({ page }) => {
     await clickAddElementButton(page);
     await checkCountOfDeleteButtons(page);
   });
 
-  test('adds next "Delete" button after previous one', async ({ page }) => {
+  test('adds next "Delete" button after previous one.', async ({ page }) => {
     await clickAddElementButton(page, 2);
     await checkCountOfDeleteButtons(page, 2);
   });
 
   for (const clickCount of pageUtils.CLICK_COUNT) {
-    test(`adds ${clickCount} "Delete" buttons after clicking "Add Element" ${clickCount} times`, async ({ page }) => {
+    test(`adds ${clickCount} "Delete" buttons after clicking "Add Element" ${clickCount} times.`, async ({ page }) => {
       await clickAddElementButton(page, clickCount);
       await checkCountOfDeleteButtons(page, clickCount);
     });
@@ -25,7 +25,7 @@ test.describe('"Add Element" button', () => {
 });
 
 test.describe('"Delete" button', () => {
-  test('removes clicked "Delete" button', async ({ page }) => {
+  test('removes clicked "Delete" button.', async ({ page }) => {
     await clickAddElementButton(page);
     await checkCountOfDeleteButtons(page, 1);
 
@@ -34,7 +34,7 @@ test.describe('"Delete" button', () => {
   });
 
   for (const clickCount of pageUtils.CLICK_COUNT) {
-    test(`does not remove other ${clickCount - 1} "Delete" buttons`, async ({ page }) => {
+    test(`does not remove other ${clickCount - 1} "Delete" buttons.`, async ({ page }) => {
       await clickAddElementButton(page, clickCount);
       await checkCountOfDeleteButtons(page, clickCount);
 
@@ -44,7 +44,7 @@ test.describe('"Delete" button', () => {
   }
 
   for (const clickCount of pageUtils.CLICK_COUNT) {
-    test(`removes all ${clickCount} clicked "Delete" buttons`, async ({ page }) => {
+    test(`removes all ${clickCount} clicked "Delete" buttons.`, async ({ page }) => {
       await clickAddElementButton(page, clickCount);
       await checkCountOfDeleteButtons(page, clickCount);
 
@@ -53,7 +53,7 @@ test.describe('"Delete" button', () => {
     });
   }
 
-  test.skip('stays visible after refreshing the page', async ({ page }) => {
+  test.skip('stays visible after refreshing the page.', async ({ page }) => {
     await clickAddElementButton(page);
     await checkCountOfDeleteButtons(page, 1);
 
@@ -61,7 +61,7 @@ test.describe('"Delete" button', () => {
     await checkCountOfDeleteButtons(page, 1);
   });
 
-  test.skip('stays visible after going back and forward', async ({ page }) => {
+  test.skip('stays visible after going back and forward.', async ({ page }) => {
     await clickAddElementButton(page);
     await checkCountOfDeleteButtons(page, 1);
 
@@ -73,17 +73,17 @@ test.describe('"Delete" button', () => {
 
 async function checkCountOfDeleteButtons(page: Page, count: number = 1) {
   if (count === 0) {
-    await test.step(`"Delete" button is not visible.`, async () => {
+    await test.step(`"Delete" button is not displayed.`, async () => {
       const deleteButtonsLocator = page.getByRole("button", { name: "Delete" });
       await expect(deleteButtonsLocator).toHaveCount(count);
     });
   } else if (count === 1) {
-    await test.step(`"Delete" button is visible.`, async () => {
+    await test.step(`"Delete" button is displayed.`, async () => {
       const deleteButtonsLocator = page.getByRole("button", { name: "Delete" });
       await expect(deleteButtonsLocator).toHaveCount(count);
     });
   } else {
-    await test.step(`There are ${count} visible "Delete" buttons.`, async () => {
+    await test.step(`There are ${count} "Delete" buttons displayed.`, async () => {
       const deleteButtonsLocator = page.getByRole("button", { name: "Delete" });
       await expect(deleteButtonsLocator).toHaveCount(count);
     });

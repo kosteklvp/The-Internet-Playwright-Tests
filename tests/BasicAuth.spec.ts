@@ -1,55 +1,53 @@
-import { test, expect, Page, Browser, HTTPCredentials } from "@playwright/test";
+import { test, expect, Page, Browser } from "@playwright/test";
 import * as pageUtils from "./utils/PageUtils";
 
-const VALID_CREDENTIALS = {
-  httpCredentials: { username: "admin", password: "admin" }
-};
-
-const INVALID_CREDENTIALS = [
-  { httpCredentials: { username: 'user', password: '123' } }
-];
+//displayed
 
 test.describe('Authentication', () => {
-  test('allows to log in with correct credentials', async ({ browser }) => {
+  test('allows to log in with correct credentials.', async ({ browser }) => {
     const page = await openPage(browser);
-    await checkIfBasicAuthPageIsVisible(page);
+    await checkIfBasicAuthPageIsDisplayed(page);
   });
 
-  test('keeps logged session after refreshing the page', async ({ browser }) => {
+  test('keeps session after refreshing the page.', async ({ browser }) => {
     const page = await openPage(browser);
     await pageUtils.reloadPage(page);
-    await checkIfBasicAuthPageIsVisible(page);
+    await checkIfBasicAuthPageIsDisplayed(page);
   });
 
-  test('keeps logged session after after going back and forward', async ({ browser }) => {
+  test('keeps session after after going back and forward.', async ({ browser }) => {
     const page = await openPage(browser);
     await pageUtils.goToPreviousPage(page);
     await pageUtils.goToNextPage(page);
-    await checkIfBasicAuthPageIsVisible(page);
+    await checkIfBasicAuthPageIsDisplayed(page);
   });
 
-  test('does not allow to log in with incorrect credentials', async ({ browser }) => {
+  test('does not allow to log in with incorrect credentials.', async ({ browser }) => {
     const page = await openPage(browser, false);
-    await checkIfNotAuthorizedPageIsVisible(page);
+    await checkIfNotAuthorizedPageIsDisplayed(page);
   });
 
-  test('allows to log in after "No authorization" at first', async ({ browser }) => {
+  test('allows to log in after "No authorization" at first.', async ({ browser }) => {
     let page = await openPage(browser, false);
-    await checkIfNotAuthorizedPageIsVisible(page);
+    await checkIfNotAuthorizedPageIsDisplayed(page);
     page = await openPage(browser, true);
-    await checkIfBasicAuthPageIsVisible(page);
+    await checkIfBasicAuthPageIsDisplayed(page);
   });
 
 });
 
-async function checkIfNotAuthorizedPageIsVisible(page: Page) {
-  const text = page.getByText('Not authorized ')
-  await expect(text).toHaveText('Not authorized');
+async function checkIfNotAuthorizedPageIsDisplayed(page: Page) {
+  await test.step(`"Not authorized" page is displayed.`, async () => {
+    const text = page.getByText('Not authorized ')
+    await expect(text).toHaveText('Not authorized');
+  });
 }
 
-async function checkIfBasicAuthPageIsVisible(page: Page) {
-  const heading = page.getByRole('heading', { name: 'Basic Auth' });
-  await expect(heading).toHaveText('Basic Auth');
+async function checkIfBasicAuthPageIsDisplayed(page: Page) {
+  await test.step(`"Basic Auth" page is displayed.`, async () => {
+    const heading = page.getByRole('heading', { name: 'Basic Auth' });
+    await expect(heading).toHaveText('Basic Auth');
+  });
 }
 
 async function openPage(browser: Browser, isAuthentication: boolean = true): Promise<Page> {
